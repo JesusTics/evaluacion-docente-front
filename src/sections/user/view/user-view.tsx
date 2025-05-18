@@ -49,14 +49,14 @@ export function UserView() {
         }}
       >
         <Typography variant="h4" sx={{ flexGrow: 1 }}>
-          Users
+          Docentes
         </Typography>
         <Button
           variant="contained"
           color="inherit"
           startIcon={<Iconify icon="mingcute:add-line" />}
         >
-          New user
+          Nuevo docente
         </Button>
       </Box>
 
@@ -85,13 +85,17 @@ export function UserView() {
                     _users.map((user) => user.id)
                   )
                 }
+                // headLabel={[
+                //   { id: 'name', label: 'Name' },
+                //   { id: 'company', label: 'Company' },
+                //   { id: 'role', label: 'Role' },
+                //   { id: 'isVerified', label: 'Verified', align: 'center' },
+                //   { id: 'status', label: 'Status' },
+                //   { id: '' },
+                // ]}
                 headLabel={[
-                  { id: 'name', label: 'Name' },
-                  { id: 'company', label: 'Company' },
-                  { id: 'role', label: 'Role' },
-                  { id: 'isVerified', label: 'Verified', align: 'center' },
-                  { id: 'status', label: 'Status' },
-                  { id: '' },
+                  { id: 'name', label: 'Nombre' },
+                  { id: 'company', label: 'Grupos' }
                 ]}
               />
               <TableBody>

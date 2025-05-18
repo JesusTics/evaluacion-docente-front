@@ -1,6 +1,7 @@
 import 'src/global.css';
 
 import { useEffect } from 'react';
+import {SnackbarProvider} from "notistack";
 
 import Fab from '@mui/material/Fab';
 
@@ -9,6 +10,8 @@ import { usePathname } from 'src/routes/hooks';
 import { ThemeProvider } from 'src/theme/theme-provider';
 
 import { Iconify } from 'src/components/iconify';
+
+import {AuthProvider} from "./contexts/AuthContext";
 
 // ----------------------------------------------------------------------
 
@@ -40,8 +43,11 @@ export default function App({ children }: AppProps) {
 
   return (
     <ThemeProvider>
-      {children}
-      {githubButton()}
+      <SnackbarProvider maxSnack={3}>
+          <AuthProvider>
+              {children}
+          </AuthProvider>
+      </SnackbarProvider>
     </ThemeProvider>
   );
 }
