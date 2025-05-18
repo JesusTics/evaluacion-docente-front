@@ -10,6 +10,8 @@ import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgr
 import { AuthLayout } from 'src/layouts/auth';
 import { DashboardLayout } from 'src/layouts/dashboard';
 
+import EncuestaLayout from '../layouts/encuesta/layout';
+
 // ----------------------------------------------------------------------
 
 export const DashboardPage = lazy(() => import('src/pages/dashboard'));
@@ -18,6 +20,8 @@ export const UserPage = lazy(() => import('src/pages/user'));
 export const SignInPage = lazy(() => import('src/pages/sign-in'));
 export const ProductsPage = lazy(() => import('src/pages/products'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
+export const EncuestaCode = lazy(() => import('src/pages/EncuestaCode'));
+export const EncuestaPage = lazy(() => import('src/pages/Encuesta'));
 
 const renderFallback = () => (
   <Box
@@ -60,6 +64,18 @@ export const routesSection: RouteObject[] = [
     element: (
       <AuthLayout>
         <SignInPage />
+      </AuthLayout>
+    ),
+  },
+  {
+    path: 'encuesta',
+    element: <EncuestaPage />,
+  },
+  {
+    path: 'encuesta-code',
+    element: (
+      <AuthLayout>
+        <EncuestaCode />
       </AuthLayout>
     ),
   },

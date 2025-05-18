@@ -164,6 +164,10 @@ export function Logo({
     </svg>
   );
 
+  const logoItesme = (
+    <img src="https://mulege.tecnm.mx/img/logos/logo%20itesme.fw.png" alt="LogoItesme" />
+  );
+
   return (
     <LogoRoot
       component={RouterLink}
@@ -182,7 +186,7 @@ export function Logo({
       ]}
       {...other}
     >
-      {isSingle ? singleLogo : fullLogo}
+      {isSingle ? logoItesme : fullLogo}
     </LogoRoot>
   );
 }
