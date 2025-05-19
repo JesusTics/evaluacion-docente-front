@@ -40,3 +40,21 @@ export const getFormularioByClaveMateria = async (
     console.log('LA RESPONSE AL OBTENER FORMULARIO', response.data);
     return response.data
 }
+
+export interface FormularioRespuestasRequest {
+    preguntaYRespuesta: PreguntaYRespuestaRequest[];
+    materiaClave: string;
+}
+
+export interface PreguntaYRespuestaRequest {
+    preguntaId: number;
+    respuestaId: number;
+}
+
+export const postSaveAnswers = async (
+    respuestasRequest: FormularioRespuestasRequest
+): Promise<any> => {
+    const response = await axiosInstance.post('/formulario/saveAnswers', respuestasRequest);
+    console.log('RESPUESTA AL GUARDAR FORMULARIO', response.data);
+    return response.data;
+}

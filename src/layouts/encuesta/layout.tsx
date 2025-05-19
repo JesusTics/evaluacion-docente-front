@@ -8,7 +8,14 @@ export default function EncuestaLayout({
   materiaInfo: any;
 }) {
   return (
-    <Box sx={{ px: 4, py: 2 }}>
+      <Box
+          sx={{
+              minHeight: '100vh',
+              background: 'linear-gradient(to bottom right, #f3f4f6, #e5e7eb)',
+              px: 4,
+              py: 4,
+          }}
+      >
       <Box sx={{ mb: 2 }}>
         <Typography variant="h5">{materiaInfo?.nombreMateria || 'Materia desconocida'}</Typography>
         <Typography variant="subtitle1">
