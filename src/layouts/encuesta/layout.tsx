@@ -7,6 +7,7 @@ export default function EncuestaLayout({
   children: React.ReactNode;
   materiaInfo: any;
 }) {
+    console.log('LA MATERIA INFO', materiaInfo);
   return (
       <Box
           sx={{

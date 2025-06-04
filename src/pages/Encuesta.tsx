@@ -15,23 +15,25 @@
     const { state } = useLocation();
     const navigate = useNavigate();
     const [formulario, setFormulario] = useState<any>(null);
-    const [materiaDocenteDTO, setMateriaDocenteDTO] = useState<FormularioMateriaResponse>();
     const [preguntasPorAspecto, setPreguntasPorAspecto] = useState<any>({});
 
     useEffect(() => {
       if (!state?.formulario) {
-        navigate('/ingresar-clave'); // si no viene data, regresar
+        navigate('/ingresar-clave');
         return;
       }
 
-      if (!state?.materiaDocenteDTO) {
-        navigate('/ingresar-clave'); // si no viene data, regresar
-        return;
-      }
-      const agrupado = groupBy(state.formulario.preguntas, 'aspectoEvaluado');
+      // Convertir aspectos a formato plano { [nombreAspecto]: [preguntas] }
+      const agrupado = state.formulario.aspectos.reduce((acc: any, aspecto: any) => {
+        acc[aspecto.nombre] = aspecto.preguntas.map((p: any) => ({
+          ...p,
+          aspectoNombre: aspecto.nombre,
+        }));
+        return acc;
+      }, {});
+
       setPreguntasPorAspecto(agrupado);
       setFormulario(state.formulario);
-      setMateriaDocenteDTO(state.materiaDocenteDTO);
     }, [state]);
 
     // const handlePostAnswers = async () => {
@@ -46,6 +48,8 @@
     //   }
     // };
 
+    console.log('EL FORMULARIO INFO', formulario);
+
     if (!formulario) {
       return <CircularProgress />;
     }
@@ -53,29 +57,25 @@
     return (
       <EncuestaLayout
         materiaInfo={{
-          nombreMateria: state.formulario.nombre,
-          nombreDocente: state.materiaDocenteDTO.docenteNombre,
-          claveGrupo: state.code || '---',
+          nombreMateria: formulario.materiaAndGrupoInformationDTO.nombreMateria,
+          nombreDocente: formulario.docenteInformationDTO.nombreDocente,
+          claveGrupo: formulario.docenteInformationDTO.nombreGrupo || '---',
+          grupoId: formulario.materiaAndGrupoInformationDTO.grupoId || '---',
         }}
       >
         <EncuestaStepper
             preguntasPorAspecto={preguntasPorAspecto}
             onSubmit={async (respuestasAlumno) => {
-              console.log('Respuestas seleccionadas:', respuestasAlumno);
-
-              // Paso 1: transformar a lista de objetos
-              const mapped = Object.entries(respuestasAlumno).map(([preguntaId, respuestaId]) => ({
+              const mapped = Object.entries(respuestasAlumno).map(([preguntaId, opcionRespuestaId]) => ({
                 preguntaId: Number(preguntaId),
-                respuestaId: respuestaId,
+                opcionRespuestaId: Number(opcionRespuestaId)
               }));
 
-              // Paso 2: construir el payload completo
               const payload = {
-                preguntaYRespuesta: mapped,
-                materiaClave: state.materiaDocenteDTO.materiaClave,
+                // grupoMateriaDocenteId: formulario.grupoMateriaDocenteId, // <- asegúrate de pasarlo desde atrás
+                grupoMateriaDocenteId: formulario.materiaAndGrupoInformationDTO.grupoId, // <- asegúrate de pasarlo desde atrás
+                respuestas: mapped,
               };
-
-              console.log('El payload:', payload);
 
               try {
                 const response = await postSaveAnswers(payload);
@@ -83,7 +83,6 @@
                   variant: response.success ? 'success' : 'error',
                 });
 
-                // (Opcional) redirigir a una pantalla de "Gracias"
                 if (response.success) {
                   navigate('/gracias');
                 }

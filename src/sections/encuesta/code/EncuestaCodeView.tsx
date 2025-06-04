@@ -9,27 +9,28 @@ import Typography from '@mui/material/Typography';
 
 import { useRouter } from 'src/routes/hooks';
 
-import { getFormularioByClaveMateria } from '../../../api/formularios';
+import { getFormularioByGrupoClave } from '../../../api/formularios';
 
 // ----------------------------------------------------------------------
 
 export function EncuestaCodeView() {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
+  const [numDocente, setNumDocente] = useState(0);
   const [code, setCode] = useState('');
   const router = useRouter();
 
   const handleSendCode = async () => {
     try {
-      const responseFormulario = await getFormularioByClaveMateria(code);
+      const responseFormulario = await getFormularioByGrupoClave(code);
       // router.push('/');
-        navigate('/encuesta', {
-            state: {
-                formulario: responseFormulario.formulario,
-                materiaDocenteDTO: responseFormulario.materiaDocenteDTO,
-                code,
-            },
-        });
+      console.log('responseFormulario', responseFormulario);
+      console.log('responseFormulario', responseFormulario.data);
+      navigate('/encuesta', {
+        state: {
+          formulario: responseFormulario.data,
+        },
+      });
     } catch (error: any) {
       console.error('Error al obtener el formulario', error);
 
@@ -84,7 +85,9 @@ export function EncuestaCodeView() {
           mb: 5,
         }}
       >
-        <Typography variant="h5">Ingresa el codigo de la encuesta</Typography>
+        <Typography variant="h5" sx={{ alignContent: 'center', textAlign: 'center' }}>
+          Ingresa el codigo
+        </Typography>
       </Box>
       {renderForm}
     </>

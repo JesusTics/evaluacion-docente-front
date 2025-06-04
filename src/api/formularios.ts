@@ -12,12 +12,7 @@ export interface PreguntaDTOResponse {
     aspectoEvaluado: string;
     respuestas: RespuestaDTOResponse[];
 }
-export interface FormularioCompletoDTOResponse {
-    id: number;
-    nombre: string;
-    esGenerico: boolean;
-    preguntas: PreguntaDTOResponse[];
-}
+
 
 export interface MateriaDocenteDTOResponse {
     materiaId: number;
@@ -27,34 +22,85 @@ export interface MateriaDocenteDTOResponse {
     docenteNombre: string;
 }
 
+
 export interface FormularioMateriaResponse {
     success: boolean;
-    formulario: FormularioCompletoDTOResponse;
-    materiaDocenteDTO: MateriaDocenteDTOResponse
+    data: FormularioCompletoDTOResponse;
+    message: MateriaDocenteDTOResponse
 }
 
-export const getFormularioByClaveMateria = async (
-    materiaClave: string
+export interface FormularioCompletoDTOResponse {
+    id: number;
+    nombre: string;
+    aspectos: AspectoEvaluadoDTOResponse[];
+    docenteInformationDTO: DocenteInformationDTOResponse;
+    materiaAndGrupoInformationDTO: MateriaAndGrupoInformationDTOResponse;
+}
+
+export interface AspectoEvaluadoDTOResponse {
+    id: number;
+    nombre: string;
+    preguntas: PreguntaDTOResponse[];
+}
+
+export interface PreguntaDTOResponse {
+    id: number;
+    texto: string;
+    opciones: OpcionRespuestaDTOResponse[];
+}
+
+export interface OpcionRespuestaDTOResponse {
+    id: number;
+    valor: number;
+    descripcion: string;
+}
+
+export interface DocenteInformationDTOResponse {
+    nombreDocente: string;
+    imgDocente: string;
+}
+
+export interface MateriaAndGrupoInformationDTOResponse {
+    nombreMateria: string;
+    claveMateria: string;
+    nombreGrupo: string;
+    claveGrupo: string;
+    grupoId: number;
+}
+
+export const getFormularioByGrupoClave = async (
+    grupoClave: string
 ): Promise<FormularioMateriaResponse> => {
-    const response = await axiosInstance.get<FormularioMateriaResponse>('/formulario/byMateria/' + materiaClave);
+    // const response = await axiosInstance.get<FormularioMateriaResponse>('/formulario/por-docente/' + materiaClave);
+    const response = await axiosInstance.get<FormularioMateriaResponse>(`/formulario/por-grupo?claveGrupo=${grupoClave}`);
     console.log('LA RESPONSE AL OBTENER FORMULARIO', response.data);
     return response.data
 }
 
+// export interface FormularioRespuestasRequest {
+//     preguntaYRespuesta: PreguntaYRespuestaRequest[];
+//     materiaClave: string;
+// }
+//
+// export interface PreguntaYRespuestaRequest {
+//     preguntaId: number;
+//     respuestaId: number;
+// }
+
 export interface FormularioRespuestasRequest {
-    preguntaYRespuesta: PreguntaYRespuestaRequest[];
-    materiaClave: string;
+    grupoMateriaDocenteId: number;
+    respuestas: PreguntaYRespuestaRequest[];
 }
 
 export interface PreguntaYRespuestaRequest {
     preguntaId: number;
-    respuestaId: number;
+    opcionRespuestaId: number;
 }
 
 export const postSaveAnswers = async (
     respuestasRequest: FormularioRespuestasRequest
 ): Promise<any> => {
-    const response = await axiosInstance.post('/formulario/saveAnswers', respuestasRequest);
+    const response = await axiosInstance.post('/respuestas', respuestasRequest);
     console.log('RESPUESTA AL GUARDAR FORMULARIO', response.data);
     return response.data;
 }

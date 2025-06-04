@@ -54,23 +54,14 @@ export default function EncuestaStepper({
             value={respuestas[preg.id] || ''}
             onChange={(e) => handleChange(preg.id, parseInt(e.target.value))}
           >
-            {preg.respuestas.map((resp: any) => (
-              <FormControlLabel
-                key={resp.id}
-                value={resp.id}
-                control={<Radio />}
-                label={resp.texto}
-                sx={{
-                  mx: 0,
-                  my: 0.5,
-                  borderRadius: 1,
-                  px: 1,
-                  '& .MuiFormControlLabel-label': {
-                    fontSize: '0.95rem',
-                  },
-                }}
-              />
-            ))}
+              {preg.opciones.map((resp: any) => (
+                  <FormControlLabel
+                      key={resp.id}
+                      value={resp.id}
+                      control={<Radio />}
+                      label={resp.descripcion}
+                  />
+              ))}
           </RadioGroup>
         </Paper>
       ))}
