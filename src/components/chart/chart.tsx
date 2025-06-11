@@ -44,5 +44,5 @@ const ChartRoot = styled('div')(({ theme }) => ({
   width: '100%',
   flexShrink: 0,
   position: 'relative',
-  borderRadius: theme.shape.borderRadius * 1.5,
+  borderRadius: parseFloat(theme.shape.borderRadius as string) * 1.5,
 }));

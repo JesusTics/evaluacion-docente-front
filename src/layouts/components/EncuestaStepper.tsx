@@ -6,9 +6,13 @@ import { Box, Radio, Paper, Button, Typography, RadioGroup, FormControlLabel } f
 export default function EncuestaStepper({
   preguntasPorAspecto,
   onSubmit,
+  setButtonEnviarDisabled,
+  buttonEnviarDisabled,
 }: {
   preguntasPorAspecto: Record<string, any[]>;
   onSubmit: (respuestas: Record<number, number>) => void;
+  setButtonEnviarDisabled: (disabled: boolean) => void;
+  buttonEnviarDisabled: boolean;
 }) {
   const { enqueueSnackbar } = useSnackbar();
   const aspectos = Object.keys(preguntasPorAspecto);
@@ -54,14 +58,14 @@ export default function EncuestaStepper({
             value={respuestas[preg.id] || ''}
             onChange={(e) => handleChange(preg.id, parseInt(e.target.value))}
           >
-              {preg.opciones.map((resp: any) => (
-                  <FormControlLabel
-                      key={resp.id}
-                      value={resp.id}
-                      control={<Radio />}
-                      label={resp.descripcion}
-                  />
-              ))}
+            {preg.opciones.map((resp: any) => (
+              <FormControlLabel
+                key={resp.id}
+                value={resp.id}
+                control={<Radio />}
+                label={resp.descripcion}
+              />
+            ))}
           </RadioGroup>
         </Paper>
       ))}
@@ -79,6 +83,7 @@ export default function EncuestaStepper({
           <Button
             variant="contained"
             size="large"
+            disabled={buttonEnviarDisabled}
             sx={{ backgroundColor: '#1976d2', color: '#fff', px: 4, py: 1.5 }}
             onClick={() => {
               const preguntasPaso = preguntasPorAspecto[aspectos[currentStep]];
@@ -90,6 +95,7 @@ export default function EncuestaStepper({
                 });
                 return;
               }
+              setButtonEnviarDisabled(true);
 
               onSubmit(respuestas);
             }}

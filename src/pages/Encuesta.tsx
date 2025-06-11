@@ -4,21 +4,28 @@
 
   import { CircularProgress } from '@mui/material';
 
+  import avatarGenerico from 'src/assets/imagenes/avatarGenerico.png'
+
   import { postSaveAnswers } from '../api/formularios';
   import EncuestaLayout from '../layouts/encuesta/layout';
   import EncuestaStepper from '../layouts/components/EncuestaStepper';
 
-  import type { FormularioMateriaResponse } from '../api/formularios';
-
-  export default function Encuesta() {
+  
+export default function Encuesta() {
     const { enqueueSnackbar } = useSnackbar();
     const { state } = useLocation();
     const navigate = useNavigate();
+    const [buttonEnviarDisabled, setButtonEnviarDisabled] = useState(false);
     const [formulario, setFormulario] = useState<any>(null);
+    const [alumnoNumControl, setAlumnoNumControl] = useState<any>(null);
     const [preguntasPorAspecto, setPreguntasPorAspecto] = useState<any>({});
 
     useEffect(() => {
       if (!state?.formulario) {
+        navigate('/ingresar-clave');
+        return;
+      }
+      if (!state?.alumnoNumControl) {
         navigate('/ingresar-clave');
         return;
       }
@@ -34,6 +41,7 @@
 
       setPreguntasPorAspecto(agrupado);
       setFormulario(state.formulario);
+      setAlumnoNumControl(state.alumnoNumControl);
     }, [state]);
 
     // const handlePostAnswers = async () => {
@@ -61,9 +69,12 @@
           nombreDocente: formulario.docenteInformationDTO.nombreDocente,
           claveGrupo: formulario.docenteInformationDTO.nombreGrupo || '---',
           grupoId: formulario.materiaAndGrupoInformationDTO.grupoId || '---',
+          fotoDocente: formulario.docenteInformationDTO.imgDocente || avatarGenerico,
         }}
       >
         <EncuestaStepper
+            setButtonEnviarDisabled={setButtonEnviarDisabled}
+            buttonEnviarDisabled={buttonEnviarDisabled}
             preguntasPorAspecto={preguntasPorAspecto}
             onSubmit={async (respuestasAlumno) => {
               const mapped = Object.entries(respuestasAlumno).map(([preguntaId, opcionRespuestaId]) => ({
@@ -75,6 +86,7 @@
                 // grupoMateriaDocenteId: formulario.grupoMateriaDocenteId, // <- asegúrate de pasarlo desde atrás
                 grupoMateriaDocenteId: formulario.materiaAndGrupoInformationDTO.grupoId, // <- asegúrate de pasarlo desde atrás
                 respuestas: mapped,
+                alumnoNumControl,
               };
 
               try {

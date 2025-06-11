@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8080/api',
-  // authURL: 'http://localhost:8080/auth',
+  baseURL: 'http://localhost:8080/api', // LOCAL
+  // baseURL: 'https://plantilla-backend-springboot-production.up.railway.app/api', // RAILWAY
   headers: {
     'Content-Type': 'application/json',
   },
@@ -23,7 +23,8 @@ axiosInstance.interceptors.request.use(
 );
 
 const axiosAuthInstance = axios.create({
-  baseURL: 'http://localhost:8080/api/auth',
+  baseURL: 'http://localhost:8080/api/auth', //LOCAL
+  // baseURL: 'https://plantilla-backend-springboot-production.up.railway.app/api/auth', //RAILWAY
   headers: {
     'Content-Type': 'application/json',
   },
