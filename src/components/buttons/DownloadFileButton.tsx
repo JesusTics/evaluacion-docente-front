@@ -1,20 +1,20 @@
 import Badge from "@mui/material/Badge";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
-import DownloadIcon from "@mui/icons-material/Download"; // Ícono oficial de MUI
+import DownloadIcon from "@mui/icons-material/Download";
 
-const DownloadFileButton = () => (
+import {generateEvaluacionAlumnosByDocente} from "../../api/dashboard"; // Ícono oficial de MUI
+
+interface DownloadFileButtonProps {
+    userId: number;
+}
+
+const DownloadFileButton: React.FC<DownloadFileButtonProps> = ({ userId }) => (
     <Tooltip title="Descargar reporte del docente">
         <IconButton
             color="primary"
             onClick={() => {
-                // Simulación de descarga. Reemplaza con tu URL real.
-                const link = document.createElement('a');
-                link.href = '/api/reportes/docente/123'; // <--- aquí va tu endpoint real
-                link.setAttribute('download', 'reporte-docente.pdf');
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
+                downloadEvaluacionAlumnosByDocente(userId);
             }}
         >
             <Badge color="primary">
@@ -25,3 +25,15 @@ const DownloadFileButton = () => (
 );
 
 export default DownloadFileButton;
+
+const downloadEvaluacionAlumnosByDocente = async (idDocente: number) => {
+    const pdfBlob = await generateEvaluacionAlumnosByDocente(idDocente);
+
+    const url = window.URL.createObjectURL(pdfBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `EvaluacionAlumnos_${idDocente}.pdf`);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+};

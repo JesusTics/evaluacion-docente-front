@@ -35,6 +35,7 @@ export function SignInView() {
     try {
       const responseLogin = await loginUsuario({ username: email, password });
       auth.login(responseLogin.user, responseLogin.token);
+        localStorage.setItem('refreshToken', responseLogin.refreshToken);
       router.push('/');
     } catch (error: any) {
       console.error('Error al iniciar sesión', error);
@@ -65,10 +66,6 @@ export function SignInView() {
           inputLabel: { shrink: true },
         }}
       />
-
-      {/*<Link variant="body2" color="inherit" sx={{ mb: 1.5 }}>*/}
-      {/*  Forgot password?*/}
-      {/*</Link>*/}
 
       <TextField
         fullWidth
@@ -103,6 +100,39 @@ export function SignInView() {
       >
         Entrar
       </Button>
+
+        <Box sx={{ width: '100%', mt: 4 }}>
+            <Box
+                sx={{
+                    borderTop: '1px solid',
+                    borderColor: 'divider',
+                    my: 3,
+                    width: '100%',
+                }}
+            />
+            <Typography variant="subtitle2" align="center" gutterBottom>
+                ¿Eres estudiante?
+            </Typography>
+
+            <Button
+                fullWidth
+                size="large"
+                variant="outlined"
+                color="primary"
+                onClick={() => router.push('/encuesta-code')}
+                sx={{
+                    mt: 1,
+                    fontWeight: 'bold',
+                    textTransform: 'none',
+                    borderWidth: 2,
+                    ':hover': {
+                        borderWidth: 2,
+                    },
+                }}
+            >
+                Ir a contestar la encuesta
+            </Button>
+        </Box>
     </Box>
   );
 
@@ -118,44 +148,8 @@ export function SignInView() {
         }}
       >
         <Typography variant="h5">Iniciar sesion</Typography>
-        <Typography
-          variant="body2"
-          sx={{
-            color: 'text.secondary',
-          }}
-        >
-          Don’t have an account?
-          <Link variant="subtitle2" sx={{ ml: 0.5 }}>
-            Get started
-          </Link>
-        </Typography>
       </Box>
       {renderForm}
-      {/*<Divider sx={{ my: 3, '&::before, &::after': { borderTopStyle: 'dashed' } }}>*/}
-      {/*  <Typography*/}
-      {/*    variant="overline"*/}
-      {/*    sx={{ color: 'text.secondary', fontWeight: 'fontWeightMedium' }}*/}
-      {/*  >*/}
-      {/*    OR*/}
-      {/*  </Typography>*/}
-      {/*</Divider>*/}
-      {/*<Box*/}
-      {/*  sx={{*/}
-      {/*    gap: 1,*/}
-      {/*    display: 'flex',*/}
-      {/*    justifyContent: 'center',*/}
-      {/*  }}*/}
-      {/*>*/}
-      {/*  <IconButton color="inherit">*/}
-      {/*    <Iconify width={22} icon="socials:google" />*/}
-      {/*  </IconButton>*/}
-      {/*  <IconButton color="inherit">*/}
-      {/*    <Iconify width={22} icon="socials:github" />*/}
-      {/*  </IconButton>*/}
-      {/*  <IconButton color="inherit">*/}
-      {/*    <Iconify width={22} icon="socials:twitter" />*/}
-      {/*  </IconButton>*/}
-      {/*</Box>*/}
     </>
   );
 }

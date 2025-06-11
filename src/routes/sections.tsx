@@ -10,7 +10,7 @@ import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgr
 import { AuthLayout } from 'src/layouts/auth';
 import { DashboardLayout } from 'src/layouts/dashboard';
 
-import EncuestaLayout from '../layouts/encuesta/layout';
+import RequireAuth from '../utils/RequireAuth';
 
 // ----------------------------------------------------------------------
 
@@ -47,11 +47,13 @@ const renderFallback = () => (
 export const routesSection: RouteObject[] = [
   {
     element: (
-      <DashboardLayout>
-        <Suspense fallback={renderFallback()}>
-          <Outlet />
-        </Suspense>
-      </DashboardLayout>
+      <RequireAuth>
+        <DashboardLayout>
+          <Suspense fallback={renderFallback()}>
+            <Outlet />
+          </Suspense>
+        </DashboardLayout>
+      </RequireAuth>
     ),
     children: [
       { index: true, element: <DashboardPage /> },

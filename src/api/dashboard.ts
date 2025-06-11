@@ -26,3 +26,13 @@ export const getAllInformactionDashboardByDocente = async (
   console.log('ERROR AL OBTENER LA INFORMACION DEL DASHBOARD BY DOCENTE', response.data);
   return response.data;
 };
+
+export const generateEvaluacionAlumnosByDocente = async (
+    idDocente: number
+): Promise<Blob> => {
+  const response = await axiosInstance.get('/reporte/evaluacion-alumnos/' + idDocente, {
+    responseType: 'blob',
+  });
+
+  return response.data as Blob;
+};
