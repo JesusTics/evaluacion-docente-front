@@ -21,6 +21,7 @@ export const SignInPage = lazy(() => import('src/pages/sign-in'));
 export const ProductsPage = lazy(() => import('src/pages/products'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
 export const EncuestaCode = lazy(() => import('src/pages/EncuestaCode'));
+export const GraciasPage = lazy(() => import('src/pages/Gracias'));
 export const EncuestaPage = lazy(() => import('src/pages/Encuesta'));
 
 const renderFallback = () => (
@@ -78,6 +79,10 @@ export const routesSection: RouteObject[] = [
         <EncuestaCode />
       </AuthLayout>
     ),
+  },
+  {
+    path: 'gracias',
+    element: <GraciasPage />,
   },
   {
     path: '404',
